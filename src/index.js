@@ -69,10 +69,22 @@ io.on('connection', (socket)=>{
    })
 })
 
+
+server.set('port', (process.env.PORT || 5000));
+
+//For avoidong Heroku $PORT error
+server.get('/', function(request, response) {
+    var result = 'App is running'
+    response.send(result);
+}).listen(app.get('port'), function() {
+    console.log('App is running, server is listening on port ', app.get('port'));
+});
+
+/*
 server.listen(port, ()=>{
     console.log(`server is up on port ${port}`)
 })
-
+*/
 
 
 //Simple sockets->
