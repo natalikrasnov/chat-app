@@ -18,6 +18,7 @@ const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true }
 const autoscroll = () => {
     // New message element
     const $newMessage = $messages.lastElementChild
+ //   console.log($messages.innerHTML)
 
     // Height of the new message
     const newMessageStyles = getComputedStyle($newMessage)
@@ -46,6 +47,7 @@ socket.on('message', (message) => {
         createdAt: moment(message.createdAt).format('h:mm a')
     })
     $messages.insertAdjacentHTML('beforeend', html)
+    autoscroll()
 })
 
 socket.on('locationMessage', ( message) => {
@@ -56,6 +58,7 @@ socket.on('locationMessage', ( message) => {
         createdAt: moment(message.createdAt).format('h:mm a')
     })
     $messages.insertAdjacentHTML('beforeend', html)
+    autoscroll()
 })
 
 socket.on('roomData', ({ room, users }) => {
