@@ -70,9 +70,32 @@ io.on('connection', (socket)=>{
 })
 
 
+const express = require('express'),
+    cors = require('cors'),
+    app = express(),
+    port = process.env.PORT || 3000;
+    bodyParser = require('body-parser'),
+    todoRoutes = require('./routes/todo'),
+    path = require("path");
 
-server.listen(port, ()=>{
-    console.log(`server is up on port ${port}`)
+
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({extended: true}));
+server.use(cors());
+server.use(express.static(path.join(__dirname, "client", "build")))
+
+server.get('/', function (req, res){
+    res.send('Root route')
+})
+
+server.use('/api/todos', todoRoutes);
+
+server.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
+
+server.listen(port, function(){
+    console.log("Express server is running on port " + port)
 })
 
 
